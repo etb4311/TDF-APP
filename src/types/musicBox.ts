@@ -85,10 +85,32 @@ export interface DrumStepGrid {
   accentPerc: boolean[]; // spoons, jug, wood block
 }
 
+export interface CompositionParameters {
+  bpmOverride: number | null; // null = use band leader's persona BPM
+  bpmMultiplier: 0.5 | 1.0 | 1.5 | 2.0;
+  swingPercentOverride: number | null; // null = use persona swing
+  keyRootOverride: string | null; // e.g. 'C', 'D', 'E', 'G', 'A'
+  scaleModeOverride: string | null; // e.g. 'Major Pentatonic', 'Appalachian Hexatonic', 'Dorian Folk', 'Mixolydian Blues', 'Natural Minor'
+  transpositionSemitones: number; // -12 to +12
+  voicingComplexity: 'cowboy-open' | 'extended-folk' | 'triads' | 'drone-fifth';
+  soundTimbres: {
+    stompPitchHz: number; // 70 to 160
+    snareDecayMs: number; // 60 to 240
+    washtubCutoffHz: number; // 250 to 900
+    washtubResonance: number; // 1 to 6
+    guitarBrightnessHz: number; // 1200 to 3800
+    fiddleVibratoRateHz: number; // 3.5 to 8.0
+    fiddleVibratoDepthCents: number; // 5 to 30
+    harmonicaBendMs: number; // 20 to 120
+    campfireCrackleIntensity: number; // 0.2 to 2.0
+  };
+}
+
 export interface ComposedFolkSong {
   title: string;
   bandLeader: PersonaProfile;
   bpm: number;
+  swingPercent: number;
   key: string;
   scale: string;
   activeDocksCount: number;
@@ -106,6 +128,7 @@ export interface ComposedFolkSong {
     roman: string;
     pitches: number[];
   }[];
+  parametersUsed: CompositionParameters;
 }
 
 export interface MusicBoxConfig {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Pause, RotateCw, Eye, Sparkles, Volume2, ShieldAlert } from 'lucide-react';
+import { RotateCw, Eye, Sparkles } from 'lucide-react';
 import { folkAudio } from '../utils/folkAudioEngine';
 
 interface MusicBoxLidProps {
@@ -32,60 +32,57 @@ export const MusicBoxLid: React.FC<MusicBoxLidProps> = ({
   return (
     <div
       id="music-box-lid-controller"
-      className="bg-stone-900 border border-stone-800 rounded-xl p-4 shadow-xl text-stone-200"
+      className="bg-[#fefae0] border-4 border-[#bc6c25] rounded-[2rem] p-4 sm:p-5 shadow-[0_6px_0_#936639] text-[#382c26] relative overflow-hidden"
     >
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Left: Physical Lid Mechanism Info */}
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <button
-              id="btn-toggle-lid"
-              onClick={onToggleLid}
-              className={`relative px-5 py-3 rounded-lg font-bold text-sm tracking-wide transition-all shadow-lg flex items-center gap-3 border ${
-                isClosed
-                  ? 'bg-amber-600 hover:bg-amber-500 text-stone-950 border-amber-400 shadow-amber-900/40'
-                  : 'bg-stone-800 hover:bg-stone-700 text-amber-400 border-amber-600/60 shadow-black/60'
-              }`}
-              title={isClosed ? 'Click to Open Box Lid (Pauses Music Box)' : 'Click to Shut Box Lid (Starts Music Box)'}
-            >
-              <div
-                className={`w-3.5 h-3.5 rounded-full transition-colors ${
-                  isClosed ? 'bg-amber-200 animate-pulse' : 'bg-stone-600'
-                }`}
-              />
-              <span className="uppercase font-mono text-xs tracking-wider">
-                {isClosed ? 'Lid Shut (Playing Music Box)' : 'Lid Open (Diorama Setup)'}
-              </span>
-            </button>
-          </div>
+      {/* Decorative Wooden Planks & Rivets */}
+      <div className="absolute top-2 left-6 right-6 flex justify-between pointer-events-none opacity-30">
+        <span className="w-2.5 h-2.5 rounded-full bg-[#6f4518] shadow-inner" />
+        <span className="w-2.5 h-2.5 rounded-full bg-[#6f4518] shadow-inner" />
+      </div>
 
-          <div>
-            <div className="text-xs font-mono text-stone-400 flex items-center gap-2">
-              <span>MECHANISM:</span>
-              <span className={`font-bold ${isClosed ? 'text-emerald-400' : 'text-amber-400'}`}>
-                {isClosed ? 'LATCH ENGAGED · GEARS CYCLING' : 'SPRING PAUSED · READY'}
-              </span>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Left: Physical Lid Latch Button */}
+        <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full md:w-auto">
+          <button
+            id="btn-toggle-lid"
+            onClick={onToggleLid}
+            className={`ac-btn px-6 py-3.5 rounded-2xl font-black text-sm tracking-wide transition-all flex items-center gap-3 border-2 ${
+              isClosed
+                ? 'bg-[#e76f51] border-[#bc4749] text-white shadow-[0_4px_0_#bc4749]'
+                : 'bg-[#588157] border-[#3a5a40] text-[#fefae0] shadow-[0_4px_0_#3a5a40]'
+            }`}
+            title={isClosed ? 'Click to Open Box Lid (Pauses Music Box)' : 'Click to Shut Box Lid (Starts Music Box)'}
+          >
+            <span className="text-xl">{isClosed ? '🔒' : '🔓'}</span>
+            <span className="uppercase tracking-wider font-extrabold text-xs sm:text-sm">
+              {isClosed ? 'Lid Shut (Song Playing!)' : 'Lid Open (Arrange Figurines)'}
+            </span>
+          </button>
+
+          <div className="text-center sm:text-left">
+            <div className="text-xs font-bold text-[#606c38] flex items-center justify-center sm:justify-start gap-1.5">
+              <span>{isClosed ? '✨ GEARS SPINNING' : '🍃 CLOCKWORK RESTING'}</span>
             </div>
-            <div className="text-sm font-semibold text-stone-100 flex items-center gap-2 mt-0.5">
+            <div className="text-base font-extrabold text-[#382c26] flex items-center justify-center sm:justify-start gap-2 mt-0.5">
               <span>{songTitle}</span>
-              <span className="text-xs px-2 py-0.5 rounded bg-stone-800 text-amber-300 font-mono border border-stone-700">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#faedcd] text-[#bc6c25] font-black border border-[#d4a373]">
                 {bpm} BPM
               </span>
             </div>
           </div>
         </div>
 
-        {/* Center: Wind-up Key & Spring Tension */}
-        <div className="flex items-center gap-4 bg-stone-950/80 px-4 py-2.5 rounded-lg border border-stone-800/80">
+        {/* Center: Tactile Wind-Up Spring Key */}
+        <div className="flex items-center gap-3 bg-[#faedcd] px-4 py-2.5 rounded-2xl border-2 border-[#d4a373] shadow-inner">
           <div className="text-right">
-            <div className="text-[11px] font-mono text-stone-400 uppercase">Clockwork Spring</div>
-            <div className="text-xs font-bold text-amber-400 font-mono">{springTension}% Tension</div>
+            <div className="text-[11px] font-bold text-[#7f4f24] uppercase">Spring Key</div>
+            <div className="text-xs font-black text-[#bc6c25]">{springTension}% Wound</div>
           </div>
 
-          <div className="w-24 bg-stone-800 h-2 rounded-full overflow-hidden border border-stone-700">
+          <div className="w-20 sm:w-28 bg-[#d4a373]/40 h-3 rounded-full overflow-hidden border border-[#bc6c25]/40 p-0.5">
             <div
-              className={`h-full transition-all duration-300 ${
-                springTension > 40 ? 'bg-amber-500' : springTension > 15 ? 'bg-orange-500' : 'bg-red-500'
+              className={`h-full rounded-full transition-all duration-300 ${
+                springTension > 40 ? 'bg-[#588157]' : springTension > 15 ? 'bg-[#fca311]' : 'bg-[#e76f51]'
               }`}
               style={{ width: `${springTension}%` }}
             />
@@ -97,50 +94,50 @@ export const MusicBoxLid: React.FC<MusicBoxLidProps> = ({
               folkAudio.playRatchetClick();
               onWindSpring();
             }}
-            className="p-2 rounded-lg bg-amber-900/30 hover:bg-amber-900/60 text-amber-400 border border-amber-700/50 hover:border-amber-500 transition-all flex items-center gap-1 text-xs font-medium"
-            title="Wind up the music box mechanical spring key"
+            className="ac-btn px-3 py-1.5 rounded-xl bg-[#bc6c25] border-2 border-[#8c5825] text-[#fefae0] text-xs font-black flex items-center gap-1.5 shadow-sm"
+            title="Wind up the music box clockwork spring"
           >
-            <RotateCw className={`w-4 h-4 ${isPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '4s' }} />
-            <span>Wind Key</span>
+            <RotateCw className={`w-3.5 h-3.5 ${isPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '3s' }} />
+            <span>Wind</span>
           </button>
         </div>
 
-        {/* Right: Peek Hole & Controls */}
+        {/* Right: Peep-Hole & Figurines Count */}
         <div className="flex items-center gap-2">
           {isClosed && (
             <button
               id="btn-peek-diorama"
               onClick={onTogglePeek}
-              className={`px-3 py-2 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5 ${
+              className={`ac-btn px-3.5 py-2 rounded-xl text-xs font-black border-2 flex items-center gap-1.5 transition-all ${
                 peekDioramaWhileClosed
-                  ? 'bg-amber-950/70 border-amber-600 text-amber-300'
-                  : 'bg-stone-800/80 border-stone-700 text-stone-300 hover:text-stone-100'
+                  ? 'bg-[#e9edc9] border-[#ccd5ae] text-[#3a5a40]'
+                  : 'bg-[#faedcd] border-[#d4a373] text-[#7f4f24]'
               }`}
             >
               <Eye className="w-3.5 h-3.5" />
-              <span>{peekDioramaWhileClosed ? 'Diorama Peep-Hole: ON' : 'Look Through Peep-Hole'}</span>
+              <span>{peekDioramaWhileClosed ? 'Peep-Hole: Open' : 'Peep-Hole: Shut'}</span>
             </button>
           )}
 
-          <div className="text-right pl-2 hidden sm:block">
-            <span className="text-[11px] font-mono text-stone-400 block">DOCKS OCCUPIED</span>
-            <span className="text-xs font-bold text-amber-400 font-mono">{activeDocksCount} / 5 Figurine(s)</span>
+          <div className="px-3.5 py-1.5 rounded-2xl bg-[#e9edc9] border border-[#ccd5ae] text-center">
+            <span className="text-[10px] font-bold text-[#606c38] block uppercase">Campfire Docks</span>
+            <span className="text-xs font-extrabold text-[#3a5a40]">{activeDocksCount} / 5 Seated</span>
           </div>
         </div>
       </div>
 
-      {/* Reminder Banner for Physical Toy Concept */}
-      <div className="mt-3 pt-2.5 border-t border-stone-800/80 flex items-center justify-between text-xs text-stone-400">
-        <span className="flex items-center gap-1.5 text-stone-300">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+      {/* Cheerful Animal Crossing Style Instruction Strip */}
+      <div className="mt-3.5 pt-2.5 border-t-2 border-[#ccd5ae] flex items-center justify-between text-xs text-[#606c38] font-medium">
+        <span className="flex items-center gap-1.5">
+          <Sparkles className="w-4 h-4 text-[#fca311] shrink-0" />
           <span>
-            <strong>Toy Music Box Rule:</strong> The song performs when the wooden lid is{' '}
-            <strong className="text-amber-400">shut</strong>. Dock figurines around the campfire below, then shut the lid
-            to hear their collective composition!
+            <strong>Toy Box Principle:</strong> The song plays when the wooden lid is{' '}
+            <strong className="text-[#e76f51]">shut</strong>! Arrange your animal figurines on their log stumps, then shut
+            the lid to let the folk band perform!
           </span>
         </span>
-        <span className="text-stone-400 font-mono text-[11px] hidden lg:inline">5 Personas · Campfire Wild West Band</span>
       </div>
     </div>
   );
 };
+

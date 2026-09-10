@@ -1,7 +1,62 @@
 @import "tailwindcss";
 
+@layer base {
+  body {
+    font-family: 'Fredoka', 'Sniglet', cursive, sans-serif;
+    background-color: #f7f3e8;
+    color: #382c26;
+  }
+}
+
 @layer utilities {
   .grid-cols-16 {
     grid-template-columns: repeat(16, minmax(0, 1fr));
   }
+
+  /* Animal Crossing Tactile 3D Buttons */
+  .ac-btn {
+    transition: all 0.1s ease;
+    box-shadow: 0 4px 0 rgba(40, 25, 15, 0.25);
+  }
+  .ac-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 0 rgba(40, 25, 15, 0.3);
+  }
+  .ac-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 rgba(40, 25, 15, 0.25);
+  }
+
+  /* Organic craft textures */
+  .ac-polka {
+    background-image: radial-gradient(#d6c9b3 1.5px, transparent 1.5px);
+    background-size: 16px 16px;
+  }
+
+  .ac-stripes {
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.05) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+  }
+
+  /* Speech bubble pointer */
+  .ac-bubble-tail {
+    position: relative;
+  }
+  .ac-bubble-tail::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 28px;
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: #ffffff transparent;
+    display: block;
+    width: 0;
+  }
 }
+

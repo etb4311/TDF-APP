@@ -5,10 +5,35 @@ import {
   DrumStepGrid,
   NoteEvent,
   InterpersonalDynamicEffect,
+  CompositionParameters,
 } from '../types/musicBox';
 import { PERSONAS, INTERPERSONAL_DYNAMICS } from './personaData';
 
-export function composeMusicBoxSong(docks: Record<DockId, PersonaId | null>): ComposedFolkSong {
+export const DEFAULT_COMPOSITION_PARAMS: CompositionParameters = {
+  bpmOverride: null,
+  bpmMultiplier: 1.0,
+  swingPercentOverride: null,
+  keyRootOverride: null,
+  scaleModeOverride: null,
+  transpositionSemitones: 0,
+  voicingComplexity: 'cowboy-open',
+  soundTimbres: {
+    stompPitchHz: 110,
+    snareDecayMs: 120,
+    washtubCutoffHz: 450,
+    washtubResonance: 3,
+    guitarBrightnessHz: 2200,
+    fiddleVibratoRateHz: 5.8,
+    fiddleVibratoDepthCents: 15,
+    harmonicaBendMs: 60,
+    campfireCrackleIntensity: 1.0,
+  },
+};
+
+export function composeMusicBoxSong(
+  docks: Record<DockId, PersonaId | null>,
+  params: CompositionParameters = DEFAULT_COMPOSITION_PARAMS
+): ComposedFolkSong {
   // Determine Band Leader: The persona in Dock 1 (Rhythm), or the first occupied dock
   const rhythmPersonaId = docks.rhythm;
   const activePersonas = Object.values(docks).filter((p): p is PersonaId => p !== null);
@@ -27,32 +52,62 @@ export function composeMusicBoxSong(docks: Record<DockId, PersonaId | null>): Co
   });
 
   // Calculate BPM: Base BPM from Rhythm Persona + Interpersonal Dynamic modifiers
-  let baseBpm = rhythmPersonaId ? PERSONAS[rhythmPersonaId].rhythmPersona.bpm : 100;
+  const rawBaseBpm = rhythmPersonaId ? PERSONAS[rhythmPersonaId].rhythmPersona.bpm : 100;
   const tempoMod = activeDynamics.reduce((acc, d) => acc + d.tempoModifier, 0);
-  const finalBpm = Math.max(70, Math.min(150, baseBpm + tempoMod));
+  const calculatedBpm = Math.max(50, Math.min(180, rawBaseBpm + tempoMod));
+  const finalBpm = params.bpmOverride !== null
+    ? Math.round(params.bpmOverride * params.bpmMultiplier)
+    : Math.round(calculatedBpm * params.bpmMultiplier);
+
+  // Calculate Swing
+  const baseSwing = rhythmPersonaId ? PERSONAS[rhythmPersonaId].rhythmPersona.swingPercent : 20;
+  const finalSwing = params.swingPercentOverride !== null ? params.swingPercentOverride : baseSwing;
 
   // Determine Harmonic Framework
   const harmonyPersonaId = docks.harmony;
-  const key = harmonyPersonaId === 'eagle' ? 'D Major' : harmonyPersonaId === 'beetle' ? 'E Blues' : harmonyPersonaId === 'frog' ? 'A Blues' : harmonyPersonaId === 'salmon' ? 'C Major' : 'G Major';
-  const scale = harmonyPersonaId === 'beetle' || harmonyPersonaId === 'frog' ? 'Mixolydian/Blues' : 'Diatonic Folk';
+  const naturalKey = harmonyPersonaId === 'eagle' ? 'D Major' : harmonyPersonaId === 'beetle' ? 'E Blues' : harmonyPersonaId === 'frog' ? 'A Blues' : harmonyPersonaId === 'salmon' ? 'C Major' : 'G Major';
+  const naturalScale = harmonyPersonaId === 'beetle' || harmonyPersonaId === 'frog' ? 'Mixolydian/Blues' : 'Diatonic Folk';
+
+  const key = params.keyRootOverride ? `${params.keyRootOverride} Folk` : naturalKey;
+  const scale = params.scaleModeOverride || naturalScale;
 
   // 4-measure chord progression mapped to 16 steps (4 steps per chord)
-  const chordProgression = getChordProgression(harmonyPersonaId);
+  const baseChordProgression = getChordProgression(harmonyPersonaId);
+  const chordProgression = baseChordProgression.map((chord) => ({
+    ...chord,
+    pitches: chord.pitches.map((p) => p + params.transpositionSemitones),
+  }));
 
   // Generate Rhythm Stems
   const rhythmGrid = generateRhythmGrid(rhythmPersonaId, activeDynamics);
 
-  // Generate Bass Notes
-  const bassNotes = generateBassNotes(docks.bass, chordProgression, activeDynamics);
+  // Generate Bass Notes with transposition
+  const rawBassNotes = generateBassNotes(docks.bass, chordProgression, activeDynamics);
+  const bassNotes = rawBassNotes.map((n) => ({
+    ...n,
+    pitch: n.pitch + params.transpositionSemitones,
+  }));
 
-  // Generate Harmony Notes
-  const harmonyNotes = generateHarmonyNotes(docks.harmony, chordProgression);
+  // Generate Harmony Notes with transposition
+  const rawHarmonyNotes = generateHarmonyNotes(docks.harmony, chordProgression);
+  const harmonyNotes = rawHarmonyNotes.map((n) => ({
+    ...n,
+    pitch: n.pitch + params.transpositionSemitones,
+  }));
 
-  // Generate Melody Notes
-  const melodyNotes = generateMelodyNotes(docks.melody, chordProgression, activeDynamics);
+  // Generate Melody Notes with transposition
+  const rawMelodyNotes = generateMelodyNotes(docks.melody, chordProgression, activeDynamics);
+  const melodyNotes = rawMelodyNotes.map((n) => ({
+    ...n,
+    pitch: n.pitch + params.transpositionSemitones,
+  }));
 
-  // Generate Atmosphere Notes
-  const atmosphereNotes = generateAtmosphereNotes(docks.atmosphere, chordProgression);
+  // Generate Atmosphere Notes with transposition
+  const rawAtmosphereNotes = generateAtmosphereNotes(docks.atmosphere, chordProgression);
+  const atmosphereNotes = rawAtmosphereNotes.map((n) => ({
+    ...n,
+    pitch: n.pitch + params.transpositionSemitones,
+  }));
 
   // Build Song Title
   const songTitle = getSongTitle(rhythmPersonaId, docks.melody, activeDynamics);
@@ -61,6 +116,7 @@ export function composeMusicBoxSong(docks: Record<DockId, PersonaId | null>): Co
     title: songTitle,
     bandLeader,
     bpm: finalBpm,
+    swingPercent: finalSwing,
     key,
     scale,
     activeDocksCount,
@@ -73,6 +129,7 @@ export function composeMusicBoxSong(docks: Record<DockId, PersonaId | null>): Co
       atmosphere: atmosphereNotes,
     },
     chordProgression,
+    parametersUsed: params,
   };
 }
 

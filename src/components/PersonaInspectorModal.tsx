@@ -27,18 +27,18 @@ export const PersonaInspectorModal: React.FC<PersonaInspectorModalProps> = ({
   return (
     <div
       id="persona-inspector-modal"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#382c26]/60 backdrop-blur-xs"
       onClick={onClose}
     >
       <div
-        className="bg-stone-900 border-2 border-stone-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 text-stone-200"
+        className="bg-[#fffdf7] border-4 border-[#bc6c25] rounded-[2.5rem] max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-[0_12px_0_#8c5825] p-6 text-[#382c26] relative"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Header */}
-        <div className="flex items-start justify-between pb-4 border-b border-stone-800">
+        {/* Modal Header (Animal Crossing Passport / Card Style) */}
+        <div className="flex items-start justify-between pb-4 border-b-2 border-[#ccd5ae]">
           <div className="flex items-center gap-4">
             <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center text-4xl shadow-inner border-2"
+              className="w-16 h-16 rounded-3xl flex items-center justify-center text-4xl shadow-[0_3px_0_#936639] border-2"
               style={{ backgroundColor: persona.accentBg, borderColor: persona.primaryColor }}
             >
               {persona.avatarIcon}
@@ -46,121 +46,121 @@ export const PersonaInspectorModal: React.FC<PersonaInspectorModalProps> = ({
 
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono uppercase px-2 py-0.5 rounded bg-stone-950 text-amber-400 border border-stone-800">
+                <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-[#faedcd] text-[#bc6c25] border border-[#d4a373]">
                   {persona.species} Figurine
                 </span>
                 {currentDockId && (
-                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">
-                    Currently in {DOCKS.find((d) => d.id === currentDockId)?.shortLabel} Dock
+                  <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-[#e9edc9] text-[#3a5a40] border border-[#ccd5ae]">
+                    Seated: {DOCKS.find((d) => d.id === currentDockId)?.shortLabel}
                   </span>
                 )}
               </div>
-              <h2 className="text-xl font-bold text-stone-100 mt-0.5">{persona.name}</h2>
-              <div className="text-sm font-semibold text-amber-400">{persona.title}</div>
+              <h2 className="text-xl font-black text-[#382c26] mt-0.5">{persona.name}</h2>
+              <div className="text-xs font-bold text-[#bc6c25]">{persona.title}</div>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-400 hover:text-stone-100 transition-colors"
+            className="w-8 h-8 rounded-full bg-[#faedcd] hover:bg-[#f6deb5] text-[#7f4f24] hover:text-[#382c26] transition-transform active:scale-95 flex items-center justify-center border-2 border-[#d4a373]"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Quote & Lore */}
-        <div className="py-4 border-b border-stone-800 space-y-2">
-          <div className="italic text-amber-200/90 text-sm bg-amber-950/20 p-3 rounded-xl border border-amber-900/30">
-            {persona.quote}
+        <div className="py-4 border-b-2 border-[#ccd5ae] space-y-2">
+          <div className="italic text-xs font-medium text-[#7f4f24] bg-[#faedcd] p-3 rounded-2xl border border-[#d4a373]">
+            "{persona.quote}"
           </div>
-          <p className="text-xs text-stone-300 leading-relaxed">{persona.lore}</p>
+          <p className="text-xs text-[#606c38] font-medium leading-relaxed">{persona.lore}</p>
         </div>
 
-        {/* 5 Dock Perspectives (What this persona brings to each position) */}
+        {/* 5 Dock Perspectives */}
         <div className="py-4 space-y-3">
-          <h3 className="text-xs font-mono uppercase tracking-wider text-amber-300 font-bold">
+          <h3 className="text-xs font-black uppercase tracking-wider text-[#382c26]">
             Docking Perspectives on the Campfire Music Box
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Dock 1: Rhythm */}
-            <div className="bg-stone-950 p-3 rounded-xl border border-stone-800 text-xs space-y-1">
-              <div className="flex items-center justify-between font-bold text-stone-200">
-                <span className="flex items-center gap-1.5 text-amber-400">
+            <div className="bg-[#fefae0] p-3.5 rounded-2xl border-2 border-[#d4a373] text-xs space-y-1">
+              <div className="flex items-center justify-between font-black text-[#382c26]">
+                <span className="flex items-center gap-1.5 text-[#e76f51]">
                   <Activity className="w-3.5 h-3.5" />
-                  <span>Dock 1: Rhythm & Pulse</span>
+                  <span>Dock 1: Rhythm (Leader)</span>
                 </span>
-                <span className="font-mono text-amber-300">{persona.rhythmPersona.bpm} BPM</span>
+                <span className="text-[#bc6c25]">{persona.rhythmPersona.bpm} BPM</span>
               </div>
-              <div className="text-[11px] font-semibold text-stone-300">
+              <div className="text-[11px] font-bold text-[#382c26]">
                 {persona.rhythmPersona.drumPatternName}
               </div>
-              <p className="text-[11px] text-stone-400 leading-normal">
+              <p className="text-[11px] text-[#606c38] leading-normal font-medium">
                 {persona.rhythmPersona.description}
               </p>
             </div>
 
             {/* Dock 2: Bass */}
-            <div className="bg-stone-950 p-3 rounded-xl border border-stone-800 text-xs space-y-1">
-              <div className="flex items-center justify-between font-bold text-stone-200">
-                <span className="flex items-center gap-1.5 text-emerald-400">
+            <div className="bg-[#fefae0] p-3.5 rounded-2xl border-2 border-[#d4a373] text-xs space-y-1">
+              <div className="flex items-center justify-between font-black text-[#382c26]">
+                <span className="flex items-center gap-1.5 text-[#588157]">
                   <Flame className="w-3.5 h-3.5" />
                   <span>Dock 2: Foundation & Bass</span>
                 </span>
-                <span className="font-mono text-stone-400">{persona.bassPersona.instrument}</span>
+                <span className="text-[#7f4f24]">{persona.bassPersona.instrument}</span>
               </div>
-              <div className="text-[11px] font-semibold text-stone-300">{persona.bassPersona.styleName}</div>
-              <p className="text-[11px] text-stone-400 leading-normal">{persona.bassPersona.description}</p>
+              <div className="text-[11px] font-bold text-[#382c26]">{persona.bassPersona.styleName}</div>
+              <p className="text-[11px] text-[#606c38] leading-normal font-medium">{persona.bassPersona.description}</p>
             </div>
 
             {/* Dock 3: Harmony */}
-            <div className="bg-stone-950 p-3 rounded-xl border border-stone-800 text-xs space-y-1">
-              <div className="flex items-center justify-between font-bold text-stone-200">
-                <span className="flex items-center gap-1.5 text-sky-400">
+            <div className="bg-[#fefae0] p-3.5 rounded-2xl border-2 border-[#d4a373] text-xs space-y-1">
+              <div className="flex items-center justify-between font-black text-[#382c26]">
+                <span className="flex items-center gap-1.5 text-[#3a86ff]">
                   <Layers className="w-3.5 h-3.5" />
                   <span>Dock 3: Harmony & Chords</span>
                 </span>
-                <span className="font-mono text-stone-400">{persona.harmonyPersona.instrument}</span>
+                <span className="text-[#7f4f24]">{persona.harmonyPersona.instrument}</span>
               </div>
-              <div className="text-[11px] font-semibold text-stone-300">{persona.harmonyPersona.styleName}</div>
-              <p className="text-[11px] text-stone-400 leading-normal">{persona.harmonyPersona.description}</p>
+              <div className="text-[11px] font-bold text-[#382c26]">{persona.harmonyPersona.styleName}</div>
+              <p className="text-[11px] text-[#606c38] leading-normal font-medium">{persona.harmonyPersona.description}</p>
             </div>
 
             {/* Dock 4: Melody */}
-            <div className="bg-stone-950 p-3 rounded-xl border border-stone-800 text-xs space-y-1">
-              <div className="flex items-center justify-between font-bold text-stone-200">
-                <span className="flex items-center gap-1.5 text-rose-400">
+            <div className="bg-[#fefae0] p-3.5 rounded-2xl border-2 border-[#d4a373] text-xs space-y-1">
+              <div className="flex items-center justify-between font-black text-[#382c26]">
+                <span className="flex items-center gap-1.5 text-[#ffb703]">
                   <Music className="w-3.5 h-3.5" />
                   <span>Dock 4: Melody & Lead</span>
                 </span>
-                <span className="font-mono text-stone-400">{persona.melodyPersona.instrument}</span>
+                <span className="text-[#7f4f24]">{persona.melodyPersona.instrument}</span>
               </div>
-              <div className="text-[11px] font-semibold text-stone-300">{persona.melodyPersona.styleName}</div>
-              <p className="text-[11px] text-stone-400 leading-normal">{persona.melodyPersona.description}</p>
+              <div className="text-[11px] font-bold text-[#382c26]">{persona.melodyPersona.styleName}</div>
+              <p className="text-[11px] text-[#606c38] leading-normal font-medium">{persona.melodyPersona.description}</p>
             </div>
 
             {/* Dock 5: Atmosphere */}
-            <div className="bg-stone-950 p-3 rounded-xl border border-stone-800 text-xs space-y-1 md:col-span-2">
-              <div className="flex items-center justify-between font-bold text-stone-200">
-                <span className="flex items-center gap-1.5 text-amber-300">
+            <div className="bg-[#fefae0] p-3.5 rounded-2xl border-2 border-[#d4a373] text-xs space-y-1 md:col-span-2">
+              <div className="flex items-center justify-between font-black text-[#382c26]">
+                <span className="flex items-center gap-1.5 text-[#7209b7]">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Dock 5: Atmosphere & Dialogue</span>
                 </span>
-                <span className="font-mono text-stone-400">{persona.atmospherePersona.textureType}</span>
+                <span className="text-[#7f4f24]">{persona.atmospherePersona.textureType}</span>
               </div>
-              <div className="text-[11px] font-semibold text-stone-300">
+              <div className="text-[11px] font-bold text-[#382c26]">
                 {persona.atmospherePersona.styleName}
               </div>
-              <p className="text-[11px] text-stone-400 leading-normal">
+              <p className="text-[11px] text-[#606c38] leading-normal font-medium">
                 {persona.atmospherePersona.description}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Action: Dock this persona into a chosen log seat */}
-        <div className="pt-4 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="text-xs text-stone-400">Place {persona.name.split(' ')[0]} in a dock:</span>
+        {/* Action: Seat this persona on a chosen log stump */}
+        <div className="pt-4 border-t-2 border-[#ccd5ae] flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span className="text-xs font-bold text-[#7f4f24]">Seat {persona.name.split(' ')[0]} on a Stump:</span>
           <div className="flex flex-wrap items-center gap-2">
             {DOCKS.map((dock) => {
               const isHere = currentDockId === dock.id;
@@ -171,10 +171,10 @@ export const PersonaInspectorModal: React.FC<PersonaInspectorModalProps> = ({
                     onDockPersona(dock.id, persona.id);
                     onClose();
                   }}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors border flex items-center gap-1 ${
+                  className={`ac-btn px-3 py-1.5 rounded-xl text-xs font-black transition-all border-2 flex items-center gap-1 ${
                     isHere
-                      ? 'bg-amber-600 text-stone-950 font-bold border-amber-500'
-                      : 'bg-stone-800 hover:bg-stone-700 text-stone-200 border-stone-700'
+                      ? 'bg-[#e76f51] text-white border-[#bc4749]'
+                      : 'bg-[#faedcd] hover:bg-[#f6deb5] text-[#7f4f24] border-[#d4a373]'
                   }`}
                 >
                   {isHere && <Check className="w-3 h-3" />}

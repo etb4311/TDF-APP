@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { PersonaId, DockId, ComposedFolkSong } from './types/musicBox';
-import { composeMusicBoxSong } from './utils/compositionEngine';
+import { PersonaId, DockId, ComposedFolkSong, CompositionParameters } from './types/musicBox';
+import { composeMusicBoxSong, DEFAULT_COMPOSITION_PARAMS } from './utils/compositionEngine';
 import { folkAudio } from './utils/folkAudioEngine';
 import { MusicBoxHeader } from './components/MusicBoxHeader';
 import { MusicBoxLid } from './components/MusicBoxLid';
 import { CampfireDiorama } from './components/CampfireDiorama';
 import { FigurineTray } from './components/FigurineTray';
 import { InterpersonalDynamicsPanel } from './components/InterpersonalDynamicsPanel';
-import { ToyHardwareLab } from './components/ToyHardwareLab';
+import { CompositionParameterWorkbench } from './components/CompositionParameterWorkbench';
 import { PersonaInspectorModal } from './components/PersonaInspectorModal';
 import { ConceptGuideModal } from './components/ConceptGuideModal';
 
@@ -20,6 +20,9 @@ export default function App() {
     harmony: 'salmon',
     atmosphere: 'frog',
   });
+
+  // Composition Parameterization Workbench State
+  const [parameters, setParameters] = useState<CompositionParameters>(DEFAULT_COMPOSITION_PARAMS);
 
   // Physical Lid & Spring Mechanism
   const [lidState, setLidState] = useState<'open' | 'closed'>('open');
@@ -58,10 +61,19 @@ export default function App() {
   const nextStepTimeRef = useRef(0);
   const timerIdRef = useRef<number | null>(null);
 
-  // Compose Arrangement based on docked figurines
+  // Compose Arrangement based on docked figurines AND experimental parameters
   const composedSong = useMemo(() => {
-    return composeMusicBoxSong(docks);
-  }, [docks]);
+    return composeMusicBoxSong(docks, parameters);
+  }, [docks, parameters]);
+
+  const handleUpdateParameters = (newParams: Partial<CompositionParameters>) => {
+    setParameters((prev) => ({ ...prev, ...newParams }));
+  };
+
+  const handleResetParameters = () => {
+    setParameters(DEFAULT_COMPOSITION_PARAMS);
+    folkAudio.setTimbreParams(DEFAULT_COMPOSITION_PARAMS.soundTimbres);
+  };
 
   const activeDocksCount = useMemo(() => {
     return Object.values(docks).filter((p) => p !== null).length;
@@ -322,7 +334,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0c09] text-stone-100 flex flex-col font-sans selection:bg-amber-500 selection:text-stone-950">
+    <div className="min-h-screen bg-[#f7f3e8] ac-polka text-[#382c26] flex flex-col font-sans selection:bg-[#ffb703] selection:text-[#382c26]">
       {/* Top Header */}
       <MusicBoxHeader
         masterVolume={masterVolume}
@@ -333,7 +345,7 @@ export default function App() {
       />
 
       {/* Main Diorama Workbench */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-5">
         {/* Physical Lid Controller */}
         <MusicBoxLid
           lidState={lidState}
@@ -379,10 +391,13 @@ export default function App() {
           onSelectPersonaForInspection={(pId) => setInspectingPersonaId(pId)}
         />
 
-        {/* Toy Hardware Developer Lab (Telemetry, Stems, Firmware) */}
-        <ToyHardwareLab
+        {/* Experimental Composition Parameterization Workbench & Prototyping Station */}
+        <CompositionParameterWorkbench
           docks={docks}
           composedSong={composedSong}
+          parameters={parameters}
+          onUpdateParameters={handleUpdateParameters}
+          onResetParameters={handleResetParameters}
           currentStep={currentStep}
           lidState={lidState}
           springTension={springTension}

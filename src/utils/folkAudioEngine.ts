@@ -9,9 +9,63 @@ export class FolkAudioEngine {
   private campfireGain: GainNode | null = null;
   private isCampfireActive = false;
   private campfireTimer: number | null = null;
+  public timbreParams = {
+    stompPitchHz: 110,
+    snareDecayMs: 120,
+    washtubCutoffHz: 450,
+    washtubResonance: 3,
+    guitarBrightnessHz: 2200,
+    fiddleVibratoRateHz: 5.8,
+    fiddleVibratoDepthCents: 15,
+    harmonicaBendMs: 60,
+    campfireCrackleIntensity: 1.0,
+  };
 
   constructor() {
     // AudioContext will be initialized on first user interaction
+  }
+
+  public setTimbreParams(params: Partial<typeof this.timbreParams>) {
+    this.timbreParams = { ...this.timbreParams, ...params };
+  }
+
+  public auditionInstrument(type: 'stomp' | 'snare' | 'tambourine' | 'spoons' | 'washtub' | 'guitar' | 'banjo' | 'fiddle' | 'harmonica' | 'flute' | 'jug') {
+    this.init();
+    switch (type) {
+      case 'stomp':
+        this.triggerPorchStomp(0.9, 1.0);
+        break;
+      case 'snare':
+        this.triggerBrushOrSnare(0.85, this.timbreParams.snareDecayMs / 1000);
+        break;
+      case 'tambourine':
+        this.triggerTambourine(0.8);
+        break;
+      case 'spoons':
+        this.triggerAccentPercussion('spoons', 0.85);
+        break;
+      case 'jug':
+        this.triggerAccentPercussion('jug-pop', 0.9);
+        break;
+      case 'washtub':
+        this.triggerBassNote(43, 0.45, 0.9, 'washtub-bass'); // G1
+        break;
+      case 'guitar':
+        this.triggerHarmonyNote(55, 0.7, 0.85, 'acoustic-guitar'); // G3
+        break;
+      case 'banjo':
+        this.triggerMelodyNote(67, 0.4, 0.9, 'soaring-banjo'); // G4
+        break;
+      case 'fiddle':
+        this.triggerMelodyNote(71, 0.6, 0.85, 'wild-fiddle'); // B4
+        break;
+      case 'harmonica':
+        this.triggerMelodyNote(67, 0.5, 0.9, 'blues-harmonica');
+        break;
+      case 'flute':
+        this.triggerMelodyNote(72, 0.7, 0.85, 'wooden-flute');
+        break;
+    }
   }
 
   public init() {
