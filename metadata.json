@@ -1,0 +1,8 @@
+{
+  "name": "MIDI Morph",
+  "description": "Deconstruct songs into MIDI data to reconstruct them into unique, customizable new arrangements.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
