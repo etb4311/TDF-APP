@@ -1,0 +1,402 @@
+import { PersonaProfile, PersonaId, DockId, DockDefinition, InterpersonalDynamicEffect } from '../types/musicBox';
+
+export const DOCKS: DockDefinition[] = [
+  {
+    id: 'rhythm',
+    slotNumber: 1,
+    name: 'Dock 1: Rhythm & Pulse',
+    shortLabel: 'Rhythm',
+    instrumentLabel: 'Campfire Percussion & Stomp',
+    hardwarePin: 'DOCK_A0_RFID_01',
+    description: 'The Timekeeper. Dictates the core song tempo (BPM), groove swing, dynamic accents, and percussion instrument.',
+    governs: 'Song Tempo (BPM), Swing %, & Drum Pattern',
+    iconName: 'Activity',
+  },
+  {
+    id: 'bass',
+    slotNumber: 2,
+    name: 'Dock 2: Foundation & Bass',
+    shortLabel: 'Bass',
+    instrumentLabel: 'Washtub Bass & Porch Thump',
+    hardwarePin: 'DOCK_A1_RFID_02',
+    description: 'The Earth. Anchors the harmonic roots with deep resonant acoustic plucks, bouncing walk-ups, or hollow jug slides.',
+    governs: 'Low-end register, bassline groove, & root voice-leading',
+    iconName: 'Flame',
+  },
+  {
+    id: 'harmony',
+    slotNumber: 3,
+    name: 'Dock 3: Harmony & Chords',
+    shortLabel: 'Harmony',
+    instrumentLabel: 'Campfire Guitar & Folk Accordion',
+    hardwarePin: 'DOCK_A2_RFID_03',
+    description: 'The Hearth. Plays chord progressions, Travis-picking arpeggios, chop-strums, or ringing drone voicings.',
+    governs: 'Chord progressions, rhythmic strumming, & modal colors',
+    iconName: 'Layers',
+  },
+  {
+    id: 'melody',
+    slotNumber: 4,
+    name: 'Dock 4: Melody & Lead Voice',
+    shortLabel: 'Melody',
+    instrumentLabel: 'Hoedown Fiddle, Banjo & Harmonica',
+    hardwarePin: 'DOCK_A3_RFID_04',
+    description: 'The Storyteller. Weaves the primary lyrical melodies, blistering hoedown runs, soaring banjo rolls, or blues harp bends.',
+    governs: 'Lead melodic phrasing, ornamentations, & motif shape',
+    iconName: 'Music',
+  },
+  {
+    id: 'atmosphere',
+    slotNumber: 5,
+    name: 'Dock 5: Atmosphere & Accent',
+    shortLabel: 'Atmosphere',
+    instrumentLabel: 'Campfire Embers, Flute & Textures',
+    hardwarePin: 'DOCK_A4_RFID_05',
+    description: 'The Wild. Adds nocturnal textures, wind whistles, jaw harp twangs, peeping crickets, and dialogue reactions to the band.',
+    governs: 'Campfire ambience, counter-melodic fills, & dialogue',
+    iconName: 'Sparkles',
+  },
+];
+
+export const PERSONAS: Record<PersonaId, PersonaProfile> = {
+  fox: {
+    id: 'fox',
+    name: 'Reynard the Fox',
+    species: 'Fox',
+    title: 'The Cunning Trickster',
+    folkRole: 'Wild West Fiddle & Washboard Stomp',
+    avatarIcon: '🦊',
+    primaryColor: '#f97316', // Orange
+    secondaryColor: '#ea580c',
+    accentBg: 'rgba(249, 115, 22, 0.15)',
+    quote: '"Never take the straight road when a crooked dance gets you there faster!"',
+    lore: 'A clever wanderer from the scrub pines who plays with fiery speed, syncopated off-beats, and mischievous grace.',
+    rhythmPersona: {
+      bpm: 134,
+      timeFeel: 'fast-hoedown',
+      swingPercent: 28,
+      drumPatternName: 'Fast Barn Hoedown Stomp',
+      description: 'Pushes the band to a blistering 134 BPM with snappy wood-block clatter, rushed 16ths, and syncopated foot taps.',
+    },
+    bassPersona: {
+      styleName: 'Bouncing Chromatic Walk',
+      instrument: 'upright-acoustic',
+      description: 'Playful alternating root-5th with cheeky chromatic passing tones and sudden staccato stops.',
+    },
+    harmonyPersona: {
+      styleName: 'Offbeat Chop Chords',
+      instrument: 'acoustic-guitar',
+      progressionType: 'G - C - D - G (Folk Hoe-down)',
+      description: 'Tight, percussive rhythm guitar chops hitting on the 2 and 4 backbeats with sharp attack.',
+    },
+    melodyPersona: {
+      styleName: 'Blistering Hoedown Fiddle',
+      instrument: 'wild-fiddle',
+      description: 'Fierce double-stops, playful ornamentation, slides into minor thirds, and rapid-fire sixteenth runs.',
+    },
+    atmospherePersona: {
+      styleName: 'Whistling Pine Embers & Coyote Calls',
+      textureType: 'pine-crackles',
+      description: 'Snapping pine needle pops, playful wood whistle flourishes, and mischievous distant echoes.',
+    },
+  },
+
+  eagle: {
+    id: 'eagle',
+    name: 'Aquila the Eagle',
+    species: 'Eagle',
+    title: 'The High-Flying Visionary',
+    folkRole: 'Clawhammer 5-String Banjo & High Drone',
+    avatarIcon: '🦅',
+    primaryColor: '#0ea5e9', // Sky Blue
+    secondaryColor: '#0284c7',
+    accentBg: 'rgba(14, 165, 233, 0.15)',
+    quote: '"From high above the canyon ridge, every note aligns in perfect clarity."',
+    lore: 'A majestic mountain sentinel whose crisp clawhammer banjo rolls cascade like mountain sunlight over open canyons.',
+    rhythmPersona: {
+      bpm: 118,
+      timeFeel: 'train-gallop',
+      swingPercent: 12,
+      drumPatternName: 'Frontier Train Gallop',
+      description: 'A resolute, driving 118 BPM locomotive gallop featuring driving kick-and-tambourine pulses.',
+    },
+    bassPersona: {
+      styleName: 'Soaring Tenor Bass',
+      instrument: 'upright-acoustic',
+      description: 'Climbs into the high tenor register with expansive octave leaps and majestic sustaining roots.',
+    },
+    harmonyPersona: {
+      styleName: 'Resonant Open-String Drones',
+      instrument: 'clawhammer-banjo',
+      progressionType: 'D - G - A - D (Frontier Modal)',
+      description: 'Wide, open-voiced modal cowboy chords with ringing 5th-string drone resonance.',
+    },
+    melodyPersona: {
+      styleName: 'Cascading Banjo Rolls',
+      instrument: 'soaring-banjo',
+      description: 'Rapid 3-finger Scruggs rolls, soaring high-register arpeggios that glide over the chords.',
+    },
+    atmospherePersona: {
+      styleName: 'Canyon Wind & Shimmering Harmonics',
+      textureType: 'canyon-wind',
+      description: 'Echoing canyon breezes, delicate acoustic harmonic chimes, and expansive open-air sweeps.',
+    },
+  },
+
+  beetle: {
+    id: 'beetle',
+    name: 'Barnaby the Beetle',
+    species: 'Beetle',
+    title: 'The Steadfast Grounder',
+    folkRole: 'Upright Washtub Bass & Heavy Porch Stomp',
+    avatarIcon: '🪲',
+    primaryColor: '#84cc16', // Lime / Earthy Olive
+    secondaryColor: '#65a30d',
+    accentBg: 'rgba(132, 204, 22, 0.15)',
+    quote: '"Dig your roots deep into the dust. Rhythm isn’t hurried—it’s carried."',
+    lore: 'An ancient burrowing master of the soil who refuses to be rushed, thumping the deep washtub string with patient, relentless authority.',
+    rhythmPersona: {
+      bpm: 82,
+      timeFeel: 'heavy-porch-stomp',
+      swingPercent: 42,
+      drumPatternName: 'Deliberate Porch Chug',
+      description: 'Brings the entire ensemble down to a heavy, grounded 82 BPM with resonant oak-log stomps and dragging shakers.',
+    },
+    bassPersona: {
+      styleName: 'Subterranean Washtub Thump',
+      instrument: 'washtub-bass',
+      description: 'Massive, woody sub-frequency plucks that sustain low roots and hold down the band with unwavering gravity.',
+    },
+    harmonyPersona: {
+      styleName: 'Heavy Thumbed Blues Strums',
+      instrument: 'acoustic-guitar',
+      progressionType: 'E - A - B7 - E (Deep Delta Blues)',
+      description: 'Thick, low-register thumb-and-brush chords with earthy blues thirds and dark modal grit.',
+    },
+    melodyPersona: {
+      styleName: 'Soulful Campfire Harmonica Riffs',
+      instrument: 'blues-harmonica',
+      description: 'Slow, brooding blues harp phrases with low-register bends, raw breath pulls, and expressive pauses.',
+    },
+    atmospherePersona: {
+      styleName: 'Nocturnal Crickets & Deep Earth Hum',
+      textureType: 'nocturnal-crickets',
+      description: 'Warm night crickets, dry prairie grass rustle, and rich resonant wooden creaks.',
+    },
+  },
+
+  salmon: {
+    id: 'salmon',
+    name: 'Sari the Salmon',
+    species: 'Salmon',
+    title: 'The Resilient Stream',
+    folkRole: 'Fingerpicked Parlor Guitar & River Melody',
+    avatarIcon: '🐟',
+    primaryColor: '#f43f5e', // Rose / Coral
+    secondaryColor: '#e11d48',
+    accentBg: 'rgba(244, 63, 94, 0.15)',
+    quote: '"Swim against the current, and you will discover the melody that never ends."',
+    lore: 'A graceful voyager of mountain headwaters who weaves flowing fingerstyle arpeggios that glide over obstacles like shimmering water.',
+    rhythmPersona: {
+      bpm: 96,
+      timeFeel: 'flowing-waltz',
+      swingPercent: 35,
+      drumPatternName: 'Rolling River Brush Lilt',
+      description: 'Flowing 96 BPM fluid rhythm with gentle brush rolls, rolling cajon patter, and river-stone clicks.',
+    },
+    bassPersona: {
+      styleName: 'Liquid Walking Melodies',
+      instrument: 'walking-thumb',
+      description: 'Smooth, graceful walking lines that connect chords like water weaving gently around smooth river stones.',
+    },
+    harmonyPersona: {
+      styleName: 'Travis-Picked Acoustic Flow',
+      instrument: 'acoustic-guitar',
+      progressionType: 'C - Am - F - G (Campfire Ballad)',
+      description: 'Sweet, intricate Travis fingerpicking alternating bass notes with fluid high melody strings.',
+    },
+    melodyPersona: {
+      styleName: 'Lyrical River Flute & Guitar',
+      instrument: 'fingerstyle-lead',
+      description: 'Tender, flowing folk phrases with expressive slides, ornamental trills, and nostalgic sweetness.',
+    },
+    atmospherePersona: {
+      styleName: 'Shimmering River Stream & Harmonics',
+      textureType: 'river-stream',
+      description: 'Gentle water ripple chimes, rainstick trickles, and shimmering acoustic bell harmonics.',
+    },
+  },
+
+  frog: {
+    id: 'frog',
+    name: 'Barnaby Ribbit the Frog',
+    species: 'Frog',
+    title: 'The Swampy Groover',
+    folkRole: 'Blues Harmonica, Clay Jug & Spoons',
+    avatarIcon: '🐸',
+    primaryColor: '#10b981', // Emerald
+    secondaryColor: '#059669',
+    accentBg: 'rgba(16, 185, 129, 0.15)',
+    quote: '"A little mud on your boots makes every stomp feel twice as juicy!"',
+    lore: 'A jolly bayou minstrel who plays bending mouth harp, blows resonant moonshine jugs, and rattles wooden spoons with swampy swagger.',
+    rhythmPersona: {
+      bpm: 88,
+      timeFeel: 'swamp-drag',
+      swingPercent: 55,
+      drumPatternName: 'Bayou Half-Time Drag',
+      description: 'A lazy, deep-pocket 88 BPM swamp drag featuring hollow clay jug pops, wooden spoons, and dragged off-beats.',
+    },
+    bassPersona: {
+      styleName: 'Hollow Clay Jug Drops',
+      instrument: 'hollow-jug',
+      description: 'Booming blown jug notes that scoop upward in pitch and drop unexpectedly on the upbeat.',
+    },
+    harmonyPersona: {
+      styleName: 'Reed Harmonium & Swamp Organ',
+      instrument: 'reed-harmonium',
+      progressionType: 'A7 - D7 - E7 - A7 (Swamp Rag)',
+      description: 'Warm, raspy chord puffs with dominant 7th grit and vintage pump-organ charm.',
+    },
+    melodyPersona: {
+      styleName: 'Wailing Bayou Blues Harp',
+      instrument: 'blues-harmonica',
+      description: 'Gritty overblown harmonica riffs with pitch drops, hand-wah effects, and eccentric ribbit stabs.',
+    },
+    atmospherePersona: {
+      styleName: 'Peeper Chorus & Swamp Bubbles',
+      textureType: 'swamp-peepers',
+      description: 'Cheerful twilight peeper frogs, hollow bamboo guiros, and playful jaw-harp boings.',
+    },
+  },
+};
+
+export const INTERPERSONAL_DYNAMICS: InterpersonalDynamicEffect[] = [
+  {
+    id: 'fox-eagle-speed',
+    title: 'The Canyon Dash',
+    personasInvolved: ['fox', 'eagle'],
+    description: 'Fox’s trickster sprint provokes Eagle’s soaring precision into an adrenaline-fueled frontier hoedown.',
+    musicalImpact: 'Tempo pushes +6 BPM with intricate banjo and fiddle duel flourishes on step 8 and 16.',
+    tempoModifier: 6,
+    specialTexture: 'Fiddle & Banjo unison ornaments',
+  },
+  {
+    id: 'beetle-frog-mud',
+    title: 'The Bayou Bottom',
+    personasInvolved: ['beetle', 'frog'],
+    description: 'Beetle’s heavy earthiness joins Frog’s swamp drag to create an intoxicating deep-pocket groove.',
+    musicalImpact: 'Swing increases to maximum swamp pocket; washtub bass and jug double on accent beats.',
+    tempoModifier: -4,
+    specialTexture: 'Resonant jug + washtub bass unison drop',
+  },
+  {
+    id: 'eagle-salmon-mountain',
+    title: 'Glacial Waters',
+    personasInvolved: ['eagle', 'salmon'],
+    description: 'Eagle’s high open-sky drone blends with Salmon’s flowing river fingerpicking in majestic harmony.',
+    musicalImpact: 'Chords expand with ringing open 9th and 11th voicings; adds shimmering bell harmonics.',
+    tempoModifier: 0,
+    specialTexture: 'Cascading open-string harmonics',
+  },
+  {
+    id: 'fox-beetle-tension',
+    title: 'Grounded Agility',
+    personasInvolved: ['fox', 'beetle'],
+    description: 'Beetle anchors the heavy porch stomp while Fox weaves lightning fiddle runs over top, creating irresistible dynamic contrast.',
+    musicalImpact: 'Heavy half-time backbeat contrasted with rapid 16th-note fiddle ornaments.',
+    tempoModifier: 0,
+    specialTexture: 'Staccato fiddle chops against deep washtub sustain',
+  },
+  {
+    id: 'frog-fox-mischief',
+    title: 'Campfire Pranksters',
+    personasInvolved: ['frog', 'fox'],
+    description: 'The two tricksters trade playful call-and-response licks, inserting witty syncopated stops.',
+    musicalImpact: 'Adds unexpected syncopated pauses on beat 3 and bouncy jaw-harp boings.',
+    tempoModifier: 2,
+    specialTexture: 'Playful jaw-harp & wood-block banter',
+  },
+  {
+    id: 'full-camp-assembly',
+    title: 'The Great Campfire Guild',
+    personasInvolved: ['fox', 'eagle', 'beetle', 'salmon', 'frog'],
+    description: 'All 5 distinct animal personas assemble around the glowing fire, uniting speed, vision, earth, water, and groove into a masterwork.',
+    musicalImpact: 'Full 5-voice campfire folk orchestra with rich dynamic counterpoint and glowing campfire ember ambiance.',
+    tempoModifier: 0,
+    specialTexture: 'Full diorama campfire glow and multi-voice ensemble resonance',
+  },
+];
+
+export const PRESET_CONFIGURATIONS: {
+  id: string;
+  name: string;
+  subtitle: string;
+  description: string;
+  docks: Record<DockId, PersonaId | null>;
+}[] = [
+  {
+    id: 'hoedown',
+    name: 'The Outlaw Barn Hoedown',
+    subtitle: 'Fox on Rhythm · Eagle on Melody · Beetle on Bass',
+    description: 'Fast, high-energy foot-stomping hoedown driven by Fox’s rapid pulse and Eagle’s blazing clawhammer banjo.',
+    docks: {
+      rhythm: 'fox',
+      melody: 'eagle',
+      bass: 'beetle',
+      harmony: 'salmon',
+      atmosphere: 'frog',
+    },
+  },
+  {
+    id: 'swamp-blues',
+    name: 'Bayou Twilight Blues',
+    subtitle: 'Frog on Rhythm · Beetle on Bass · Fox on Melody',
+    description: 'Lazy, deep swamp drag with Frog setting an 88 BPM groove with clay jug and blues harmonica.',
+    docks: {
+      rhythm: 'frog',
+      bass: 'beetle',
+      melody: 'fox',
+      harmony: 'salmon',
+      atmosphere: 'eagle',
+    },
+  },
+  {
+    id: 'mountain-river',
+    name: 'High Ridge Reverie',
+    subtitle: 'Salmon on Rhythm · Eagle on Harmony · Frog on Melody',
+    description: 'Flowing, bittersweet mountain ballad with rolling acoustic guitar fingerpicking and soaring open-air winds.',
+    docks: {
+      rhythm: 'salmon',
+      harmony: 'eagle',
+      melody: 'frog',
+      bass: 'beetle',
+      atmosphere: 'fox',
+    },
+  },
+  {
+    id: 'heavy-porch',
+    name: 'Deep Porch Stomp',
+    subtitle: 'Beetle on Rhythm & Bass · Fox on Harmony',
+    description: 'Heavy, slow-rolling frontier blues with deliberate wooden thuds and earthy guitar chops.',
+    docks: {
+      rhythm: 'beetle',
+      bass: 'beetle',
+      harmony: 'fox',
+      melody: 'salmon',
+      atmosphere: 'frog',
+    },
+  },
+  {
+    id: 'frontier-express',
+    name: 'Canyon Locomotive',
+    subtitle: 'Eagle on Rhythm · Salmon on Melody · Fox on Bass',
+    description: 'Brisk 118 BPM driving train beat with soaring melodic lines across wide open sonic landscapes.',
+    docks: {
+      rhythm: 'eagle',
+      melody: 'salmon',
+      bass: 'fox',
+      harmony: 'beetle',
+      atmosphere: 'frog',
+    },
+  },
+];

@@ -1,6 +1,6 @@
 {
   "name": "MIDI Morph",
-  "description": "Deconstruct songs into MIDI data to reconstruct them into unique, customizable new arrangements.",
+  "description": "Wild West campfire toy music box simulator with 5 animal personas (Fox, Eagle, Beetle, Salmon, Frog) and interactive docking positions.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
